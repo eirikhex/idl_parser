@@ -1,4 +1,4 @@
-/* 
+/*
  * @file multimodule_test.idl
  * @author Yuki Suga (ysuga@ysuga.net)
  */
@@ -25,7 +25,7 @@ module moduleB {
 
 
 module moduleC {
-  
+
   struct StructC {
     moduleA::StructA structA_value;
   };
@@ -41,7 +41,8 @@ module moduleD {
   struct StructD {
     StructA structA_value;
   };
+
 };
 
-    
-  
+
+

@@ -3,7 +3,7 @@ import re
 
 from . import  module, token_buffer
 from . import type as idl_type
-from . import exception 
+from . import exception
 
 
 class ConsoleTracker():
@@ -91,7 +91,7 @@ class IDLParser():
                 logger.write('Parsing IDL(%s) but ALREADY PARSED.\n' % idl_path)
             return
             pass
-        if self._verbose: 
+        if self._verbose:
             logger.write('Parsing IDL(%s)\n' % idl_path) #sys.stdout.write(' - Parsing IDL (%s)\n' % idl_path)
             logger.indent()
         f = open(idl_path, 'r')
@@ -103,9 +103,9 @@ class IDLParser():
 
         self.parse_lines(lines, filepath=idl_path)
 
-        if self._verbose: 
+        if self._verbose:
             logger.deindent()
-            logger.write('Parsed IDL (%s)\n' % idl_path)        
+            logger.write('Parsed IDL (%s)\n' % idl_path)
         self._parsed_files.append(idl_path)
 
     def parse_lines(self, lines, filepath=None):
@@ -174,7 +174,7 @@ class IDLParser():
             func(f)
 
     def _find_idl(self, filename, apply_func, idl_dirs=[]):
-        if self._verbose: 
+        if self._verbose:
             logger.write('Finding %s\n' % filename)
             logger.indent()
 

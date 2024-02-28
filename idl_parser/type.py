@@ -37,7 +37,7 @@ def IDLType(name, parent):
 
 class IDLTypeBase(node.IDLNode):
     def __init__(self, classname, name, parent):
-        super(IDLTypeBase, self).__init__(classname, name, parent.root_node)
+        super(IDLTypeBase, self).__init__(classname, name, parent)
         self._is_sequence = False
         self._is_primitive = False
 
@@ -55,12 +55,12 @@ class IDLTypeBase(node.IDLNode):
 
 class IDLVoid(IDLTypeBase):
     def __init__(self, name, parent):
-        super(IDLVoid, self).__init__('IDLVoid', name, parent.root_node)
+        super(IDLVoid, self).__init__('IDLVoid', name, parent)
         self._verbose = True
 
 class IDLSequence(IDLTypeBase):
     def __init__(self, name, parent):
-        super(IDLSequence, self).__init__('IDLSequence', name, parent.root_node)
+        super(IDLSequence, self).__init__('IDLSequence', name, parent)
         self._verbose = True
         if name.find('sequence') < 0:
             raise InvalidIDLSyntaxError()
@@ -132,7 +132,7 @@ class IDLSequence(IDLTypeBase):
 
 class IDLArray(IDLTypeBase):
     def __init__(self, name, parent):
-        super(IDLArray, self).__init__('IDLArray', name.strip(), parent.root_node)
+        super(IDLArray, self).__init__('IDLArray', name.strip(), parent)
 
         self._verbose = True
         if name.find('[') < 0:
@@ -259,7 +259,7 @@ class IDLArray(IDLTypeBase):
 
 class IDLPrimitive(IDLTypeBase):
     def __init__(self, name, parent):
-        super(IDLPrimitive, self).__init__('IDLPrimitive', name, parent.root_node)
+        super(IDLPrimitive, self).__init__('IDLPrimitive', name, parent)
         self._verbose = True
         self._is_primitive = True
     @property
@@ -267,7 +267,7 @@ class IDLPrimitive(IDLTypeBase):
         return (self.parent.full_path + self.sep + self.name).strip()
 class IDLBasicType(IDLTypeBase):
     def __init__(self, name, parent):
-        super(IDLBasicType, self).__init__('IDLBasicType', name, parent.root_node)
+        super(IDLBasicType, self).__init__('IDLBasicType', name, parent)
         self._verbose = True
         #if self.name.find('['):
         #    self._name = self.name[self.name.find('[')+1:]
@@ -275,9 +275,18 @@ class IDLBasicType(IDLTypeBase):
 
     @property
     def obj(self):
-        global_module = self.root_node
-        typs = global_module.find_types(self.name)
-        if len(typs) == 0:
-            return None
-        else:
-            return typs[0]
+        # global_module = self.root_node
+        # typs = global_module.find_types(self.name)
+        # if len(typs) == 0:
+        #     return None
+        # else:
+        #     return typs[0]
+        typs = []
+        current_module = self.parent
+        while len(typs) == 0:
+            if current_module.classname == "IDLModule":
+                typs = current_module.find_types(self.name)
+                if len(typs) > 0:
+                    return typs[0]
+
+            current_module = current_module.parent

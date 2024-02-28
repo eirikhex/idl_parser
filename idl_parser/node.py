@@ -119,5 +119,7 @@ class IDLNode(object):
             typs = global_module.find_types(typ.name)
             if len(typs) == 0:
                 return typ.name
+            elif len(typs) > 1:
+                return typs[0].name # bug here, cannot asume that first return is the correct one
             else:
                 return typs[0].name
